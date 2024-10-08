@@ -19,7 +19,7 @@ const App = () => {
   useEffect( () =>{
     const fetchUser =async() =>{
       try{
-        const response =await axios.get("https://hospital-managment-system-1-backend.onrender.com/api/v1/user//admin/me",
+        const response =await axios.get("https://hospital-managment-system-1-backend.onrender.com/api/v1/user/admin/me",
            {withCredentials: true});
         setIsAuthenticated(true);
         setUser(response.data.user);
