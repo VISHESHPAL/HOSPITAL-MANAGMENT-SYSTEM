@@ -11,6 +11,7 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+//  PATIENT REGISTER 
 export const patientRegister = catchAsyneErrors(async (req,res,next,) => {
     const {
         firstName,
@@ -56,6 +57,8 @@ export const patientRegister = catchAsyneErrors(async (req,res,next,) => {
      
 });
 
+//  PATIENT LOGIN 
+
 export const login = catchAsyneErrors(async(req,res,next) =>{
     const {email, password, confirmPassword, role} = req.body;
     if(!email || !password || !confirmPassword || !role){
@@ -83,6 +86,21 @@ export const login = catchAsyneErrors(async(req,res,next) =>{
       generateToken(user, "User Logged In Successfully ! ", 200, res)
 
 });
+
+// LOGOUT THE PATIENT 
+
+export const logoutPatient = catchAsyneErrors(async(req,res,next)=>{
+    res.status(200).cookie("patientToken", "",{
+        httpOnly: true,
+        expires: new Date(Date.now()),
+    })
+    .json({
+        success: true,
+        message: "Patient Log Out Successfully !",
+    });
+});
+
+// ADMIN  ROUTES 
 
 export const addNewAdmin = catchAsyneErrors(async (req,res,next) =>{
     const {
@@ -128,6 +146,8 @@ export const addNewAdmin = catchAsyneErrors(async (req,res,next) =>{
     });
 })
 
+// GETTING ALL THE DOCTOR BY THE ADMIN
+
 export const getAllDoctors = catchAsyneErrors(async(req,res,next) =>{
     const doctors = await User.find({role: "Doctor"});
     res.status(200).json({
@@ -136,6 +156,8 @@ export const getAllDoctors = catchAsyneErrors(async(req,res,next) =>{
     });
 });
 
+
+// GETTING ALL THE USERS WHO VISIT THE SITE
 export const getUserDetails = catchAsyneErrors(async(req,res,next) =>{
     const user = req.user;
     res.status(200).json({
@@ -144,6 +166,8 @@ export const getUserDetails = catchAsyneErrors(async(req,res,next) =>{
 
     });
 });
+
+// LOGOUT THE ADMIN
 
 export const logoutAdmin = catchAsyneErrors(async(req,res,next)=>{
     res.status(200).cookie("adminToken", "",{
@@ -156,16 +180,7 @@ export const logoutAdmin = catchAsyneErrors(async(req,res,next)=>{
     });
 });
 
-export const logoutPatient = catchAsyneErrors(async(req,res,next)=>{
-    res.status(200).cookie("patientToken", "",{
-        httpOnly: true,
-        expires: new Date(Date.now()),
-    })
-    .json({
-        success: true,
-        message: "Patient Log Out Successfully !",
-    });
-});
+// ADDING THE NEW DOCTOR
 
 export const addNewDoctor = catchAsyneErrors(async(req,res,next)=>{
     if(!req.files || Object.keys(req.files).length === 0) {
